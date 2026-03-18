@@ -76,11 +76,7 @@ namespace ATRun
                 Height    = 64,
                 BackColor = Color.White,
             };
-            pnlHeader.Paint += (_, e) =>
-            {
-                using var p = new Pen(Color.FromArgb(225, 225, 225));
-                e.Graphics.DrawLine(p, 0, pnlHeader.Height - 1, pnlHeader.Width, pnlHeader.Height - 1);
-            };
+            pnlHeader.Paint += pnlHeader_Paint;
 
             lblTitle = new Label
             {
@@ -123,7 +119,7 @@ namespace ATRun
             pnlHeader.Controls.Add(lblLanguage);
             pnlHeader.Controls.Add(cmbLanguage);
             pnlHeader.Controls.Add(btnAbout);
-            pnlHeader.ClientSizeChanged += (_, _) => LayoutHeader();
+            pnlHeader.ClientSizeChanged += pnlHeader_ClientSizeChanged;
 
             // ── Drop zone ─────────────────────────────────────────────────────
             pnlDropZone = new Panel
@@ -178,7 +174,7 @@ namespace ATRun
 
             lblDropIcon.Click += PnlDropZone_Click;
             lblDropHint.Click += PnlDropZone_Click;
-            lnkBrowse.LinkClicked += (_, _) => OpenFileBrowser();
+            lnkBrowse.LinkClicked += lnkBrowse_LinkClicked;
 
             pnlDropZone.Controls.Add(lblDropIcon);
             pnlDropZone.Controls.Add(lblDropHint);
@@ -322,11 +318,7 @@ namespace ATRun
                 Size      = new Size(460, 52),
                 BackColor = Color.White,
             };
-            pnlFooter.Paint += (_, e) =>
-            {
-                using var p = new Pen(Color.FromArgb(225, 225, 225));
-                e.Graphics.DrawLine(p, 0, 0, pnlFooter.Width, 0);
-            };
+            pnlFooter.Paint += pnlFooter_Paint;
 
             btnManage = new Button
             {
@@ -369,6 +361,22 @@ namespace ATRun
             Controls.Add(pnlFooter);
 
             ResumeLayout(false);
+        }
+
+        private void pnlHeader_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
+        {
+            using var p = new Pen(Color.FromArgb(225, 225, 225));
+            e.Graphics.DrawLine(p, 0, pnlHeader.Height - 1, pnlHeader.Width, pnlHeader.Height - 1);
+        }
+
+        private void pnlHeader_ClientSizeChanged(object sender, System.EventArgs e) => LayoutHeader();
+
+        private void lnkBrowse_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e) => OpenFileBrowser();
+
+        private void pnlFooter_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
+        {
+            using var p = new Pen(Color.FromArgb(225, 225, 225));
+            e.Graphics.DrawLine(p, 0, 0, pnlFooter.Width, 0);
         }
 
         private static Button MakeIconButton(string text, Point location) => new Button

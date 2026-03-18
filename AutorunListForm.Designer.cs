@@ -45,11 +45,7 @@ namespace ATRun
                 Height    = 56,
                 BackColor = Color.White,
             };
-            pnlHeader.Paint += (_, e) =>
-            {
-                using var p = new Pen(Color.FromArgb(225, 225, 225));
-                e.Graphics.DrawLine(p, 0, pnlHeader.Height - 1, pnlHeader.Width, pnlHeader.Height - 1);
-            };
+            pnlHeader.Paint += pnlHeader_Paint;
 
             lblTitle = new Label
             {
@@ -114,11 +110,7 @@ namespace ATRun
                 Height    = 52,
                 BackColor = Color.White,
             };
-            pnlFooter.Paint += (_, e) =>
-            {
-                using var p = new Pen(Color.FromArgb(225, 225, 225));
-                e.Graphics.DrawLine(p, 0, 0, pnlFooter.Width, 0);
-            };
+            pnlFooter.Paint += pnlFooter_Paint;
 
             btnClose = new Button
             {
@@ -132,7 +124,7 @@ namespace ATRun
             };
             btnClose.FlatAppearance.BorderSize = 0;
             btnClose.FlatAppearance.MouseOverBackColor = Color.FromArgb(215, 215, 215);
-            btnClose.Click += (_, _) => Close();
+            btnClose.Click += btnClose_Click;
 
             pnlFooter.Controls.Add(btnClose);
 
@@ -143,5 +135,19 @@ namespace ATRun
 
             ResumeLayout(false);
         }
+
+        private void pnlHeader_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
+        {
+            using var p = new Pen(Color.FromArgb(225, 225, 225));
+            e.Graphics.DrawLine(p, 0, pnlHeader.Height - 1, pnlHeader.Width, pnlHeader.Height - 1);
+        }
+
+        private void pnlFooter_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
+        {
+            using var p = new Pen(Color.FromArgb(225, 225, 225));
+            e.Graphics.DrawLine(p, 0, 0, pnlFooter.Width, 0);
+        }
+
+        private void btnClose_Click(object sender, System.EventArgs e) => Close();
     }
 }
