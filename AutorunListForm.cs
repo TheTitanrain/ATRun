@@ -19,9 +19,32 @@ namespace AddToAutorun
         public AutorunListForm()
         {
             InitializeComponent();
+            LocalizationManager.LanguageChanged += HandleLanguageChanged;
+            ApplyLocalization();
             Shown += (_, _) => RefreshEntryWidths();
             pnlScroll.ClientSizeChanged += (_, _) => RefreshEntryWidths();
             LoadEntries();
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            LocalizationManager.LanguageChanged -= HandleLanguageChanged;
+            base.OnFormClosed(e);
+        }
+
+        private void HandleLanguageChanged(object? sender, EventArgs e)
+        {
+            ApplyLocalization();
+            LoadEntries();
+        }
+
+        private void ApplyLocalization()
+        {
+            Text = LocalizationManager.Get("AutorunList.Title");
+            lblTitle.Text = LocalizationManager.Get("AutorunList.Title");
+            lblEmpty.Text = LocalizationManager.Get("AutorunList.Empty");
+            btnClose.Text = LocalizationManager.Get("AutorunList.CloseButton");
+            UpdateCountLabel();
         }
 
         // ── Load / refresh ────────────────────────────────────────────────────
@@ -48,12 +71,7 @@ namespace AddToAutorun
 
         private void UpdateCountLabel()
         {
-            lblCount.Text = _entries.Count switch
-            {
-                0 => "Нет записей",
-                1 => "1 запись",
-                _ => $"{_entries.Count} записей"
-            };
+            lblCount.Text = LocalizationManager.GetEntryCountText(_entries.Count);
         }
 
         private void RefreshEntryWidths()
@@ -128,7 +146,7 @@ namespace AddToAutorun
 
             var btnDel = new Button
             {
-                Text      = "Удалить",
+                Text      = LocalizationManager.Get("AutorunList.DeleteButton"),
                 Location  = new Point(Math.Max(18, width - 90), 14),
                 Size      = new Size(76, 28),
                 Anchor    = AnchorStyles.Top | AnchorStyles.Right,
@@ -170,8 +188,8 @@ namespace AddToAutorun
                 : entry.Name;
 
             var res = MessageBox.Show(
-                $"Удалить «{appName}» из автозапуска?",
-                "Подтверждение",
+                LocalizationManager.Format("AutorunList.ConfirmDelete", appName),
+                LocalizationManager.Get("AutorunList.ConfirmTitle"),
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question,
                 MessageBoxDefaultButton.Button2);
@@ -181,8 +199,11 @@ namespace AddToAutorun
             if (RegistryHelper.DeleteEntry(entry))
                 LoadEntries();
             else
-                MessageBox.Show("Не удалось удалить запись.", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(
+                    LocalizationManager.Get("AutorunList.DeleteError"),
+                    LocalizationManager.Get("AutorunList.DeleteErrorTitle"),
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
         }
     }
 }

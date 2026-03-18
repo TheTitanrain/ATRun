@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -83,19 +84,22 @@ namespace AddToAutorun
         }
 
         // ── SendTo shortcut ───────────────────────────────────────────────────
-        private const string SendToLinkName = "Автозапуск приложений.lnk";
+        public static string GetSendToLinkPath() => GetSendToLinkPath(LocalizationManager.GetCurrentSendToShortcutName());
 
-        public static string GetSendToLinkPath()
+        public static bool IsRegisteredInSendTo()
         {
-            var sendTo = Environment.GetFolderPath(Environment.SpecialFolder.SendTo);
-            return Path.Combine(sendTo, SendToLinkName);
-        }
+            foreach (string path in GetKnownSendToLinkPaths())
+            {
+                if (File.Exists(path))
+                    return true;
+            }
 
-        public static bool IsRegisteredInSendTo() =>
-            File.Exists(GetSendToLinkPath());
+            return false;
+        }
 
         public static void RegisterInSendTo(string exePath)
         {
+            string targetPath = GetSendToLinkPath();
             var link = new NativeMethods.ShellLink();
             try
             {
@@ -103,21 +107,41 @@ namespace AddToAutorun
                 var persistFile = (NativeMethods.IPersistFile)link;
 
                 shellLink.SetPath(exePath);
-                shellLink.SetDescription("Добавить в автозапуск");
+                shellLink.SetDescription(LocalizationManager.GetCurrentSendToShortcutDescription());
                 shellLink.SetWorkingDirectory(Path.GetDirectoryName(exePath) ?? "");
-                persistFile.Save(GetSendToLinkPath(), false);
+                persistFile.Save(targetPath, false);
             }
             finally
             {
                 Marshal.ReleaseComObject(link);
             }
+
+            foreach (string path in GetKnownSendToLinkPaths())
+            {
+                if (!path.Equals(targetPath, StringComparison.OrdinalIgnoreCase) && File.Exists(path))
+                    File.Delete(path);
+            }
         }
 
         public static void UnregisterFromSendTo()
         {
-            var path = GetSendToLinkPath();
-            if (File.Exists(path))
-                File.Delete(path);
+            foreach (string path in GetKnownSendToLinkPaths())
+            {
+                if (File.Exists(path))
+                    File.Delete(path);
+            }
+        }
+
+        private static string GetSendToLinkPath(string linkName)
+        {
+            var sendTo = Environment.GetFolderPath(Environment.SpecialFolder.SendTo);
+            return Path.Combine(sendTo, linkName);
+        }
+
+        private static IEnumerable<string> GetKnownSendToLinkPaths()
+        {
+            foreach (string linkName in LocalizationManager.GetKnownSendToShortcutNames())
+                yield return GetSendToLinkPath(linkName);
         }
     }
 }

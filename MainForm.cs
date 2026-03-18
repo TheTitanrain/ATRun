@@ -19,6 +19,7 @@ namespace AddToAutorun
         // ── State ─────────────────────────────────────────────────────────────
         private string?       _filePath;
         private bool          _isDragOver;
+        private bool          _updatingLanguageSelector;
         private AutorunHive   _hive = AutorunHive.CurrentUser;
         private readonly Timer _notifyTimer = new() { Interval = 3000 };
 
@@ -26,6 +27,10 @@ namespace AddToAutorun
         public MainForm()
         {
             InitializeComponent();
+
+            LocalizationManager.LanguageChanged += HandleLanguageChanged;
+            InitializeLanguageSelector();
+            ApplyLocalization();
 
             _notifyTimer.Tick += (_, _) => { _notifyTimer.Stop(); pnlNotify.Visible = false; };
 
@@ -46,17 +51,88 @@ namespace AddToAutorun
 
             RefreshHiveButtons();
             RefreshAddButton();
-            RefreshSendToButton();
             LayoutAdaptiveSections();
         }
 
-        // ── Form load: handle command-line arg ────────────────────────────────
+        // ── Form lifecycle ───────────────────────────────────────────────────
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
             var args = Environment.GetCommandLineArgs();
             if (args.Length > 1 && File.Exists(args[1]))
                 ProcessFile(args[1]);
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            LocalizationManager.LanguageChanged -= HandleLanguageChanged;
+            base.OnFormClosed(e);
+        }
+
+        private void HandleLanguageChanged(object? sender, EventArgs e)
+        {
+            if (ShellHelper.IsRegisteredInSendTo())
+            {
+                try { ShellHelper.RegisterInSendTo(Application.ExecutablePath); }
+                catch { }
+            }
+
+            ApplyLocalization();
+        }
+
+        // ── Language selector ────────────────────────────────────────────────
+        private void InitializeLanguageSelector()
+        {
+            cmbLanguage.SelectedIndexChanged += CmbLanguage_SelectedIndexChanged;
+            RefreshLanguageSelector();
+        }
+
+        private void CmbLanguage_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+            if (_updatingLanguageSelector || cmbLanguage.SelectedItem is not LanguageOption option)
+                return;
+
+            LocalizationManager.SetLanguage(option.Language);
+        }
+
+        private void RefreshLanguageSelector()
+        {
+            _updatingLanguageSelector = true;
+            cmbLanguage.Items.Clear();
+
+            foreach (var language in LocalizationManager.Supported)
+                cmbLanguage.Items.Add(new LanguageOption(language, LocalizationManager.GetLanguageDisplayName(language)));
+
+            for (int i = 0; i < cmbLanguage.Items.Count; i++)
+            {
+                if (cmbLanguage.Items[i] is LanguageOption option && option.Language == LocalizationManager.CurrentLanguage)
+                {
+                    cmbLanguage.SelectedIndex = i;
+                    break;
+                }
+            }
+
+            _updatingLanguageSelector = false;
+        }
+
+        private void ApplyLocalization()
+        {
+            Text = LocalizationManager.Get("App.Title");
+            lblTitle.Text = LocalizationManager.Get("App.Title");
+            lblSubtitle.Text = LocalizationManager.Get("MainForm.Subtitle");
+            lblDropHint.Text = LocalizationManager.Get("MainForm.DropHint");
+            lnkBrowse.Text = LocalizationManager.Get("MainForm.BrowseLink");
+            lblHiveLabel.Text = LocalizationManager.Get("MainForm.HiveLabel");
+            btnHkcu.Text = LocalizationManager.Get("MainForm.Hkcu");
+            btnHklm.Text = LocalizationManager.Get("MainForm.Hklm");
+            btnAdd.Text = LocalizationManager.Get("MainForm.AddButton");
+            btnManage.Text = LocalizationManager.Get("MainForm.ManageButton");
+            lblLanguage.Text = LocalizationManager.Get("MainForm.LanguageLabel");
+
+            RefreshLanguageSelector();
+            RefreshHiveButtons();
+            RefreshSendToButton();
+            LayoutAdaptiveSections();
         }
 
         // ── Drag & drop ───────────────────────────────────────────────────────
@@ -117,8 +193,8 @@ namespace AddToAutorun
         {
             using var dlg = new OpenFileDialog
             {
-                Title  = "Выберите исполняемый файл",
-                Filter = "Исполняемые файлы (*.exe)|*.exe|Все файлы (*.*)|*.*",
+                Title  = LocalizationManager.Get("MainForm.FileDialogTitle"),
+                Filter = LocalizationManager.Get("MainForm.FileDialogFilter"),
             };
             if (dlg.ShowDialog(this) == DialogResult.OK)
                 ProcessFile(dlg.FileName);
@@ -131,20 +207,18 @@ namespace AddToAutorun
             if (string.Equals(Path.GetExtension(path), ".lnk", StringComparison.OrdinalIgnoreCase))
             {
                 try   { path = ShellHelper.ResolveShortcut(path); }
-                catch { ShowNotification("Не удалось прочитать ярлык.", success: false); return; }
+                catch { ShowNotification(LocalizationManager.Get("MainForm.ShortcutReadError"), success: false); return; }
             }
 
             if (!File.Exists(path))
             {
-                ShowNotification("Файл не найден.", success: false);
+                ShowNotification(LocalizationManager.Get("MainForm.FileNotFound"), success: false);
                 return;
             }
 
             if (!FileConstants.SupportedExtensions.Contains(Path.GetExtension(path)))
             {
-                ShowNotification(
-                    "Файл не является исполняемым (.exe) и не может быть добавлен в автозапуск.",
-                    success: false);
+                ShowNotification(LocalizationManager.Get("MainForm.InvalidFile"), success: false);
                 return;
             }
 
@@ -258,12 +332,12 @@ namespace AddToAutorun
             int existing = RegistryHelper.FindExistingEntry(_filePath);
             if (existing == 1)
             {
-                ShowNotification("Уже добавлено в автозапуск текущего пользователя.", success: false);
+                ShowNotification(LocalizationManager.Get("MainForm.AlreadyCurrentUser"), success: false);
                 return;
             }
             if (existing == 2)
             {
-                ShowNotification("Уже добавлено в автозапуск для всех пользователей.", success: false);
+                ShowNotification(LocalizationManager.Get("MainForm.AlreadyAllUsers"), success: false);
                 return;
             }
 
@@ -275,17 +349,17 @@ namespace AddToAutorun
             try
             {
                 RegistryHelper.WriteEntry(entry);
-                ShowNotification("✓  Успешно добавлено в автозапуск!", success: true);
+                ShowNotification(LocalizationManager.Get("MainForm.AddSuccess"), success: true);
                 // Reset to accept another file
                 BtnClear_Click(null, EventArgs.Empty);
             }
             catch (UnauthorizedAccessException)
             {
-                ShowNotification("Нет прав для записи в реестр. Запустите от имени администратора.", success: false);
+                ShowNotification(LocalizationManager.Get("MainForm.RegistryAccessDenied"), success: false);
             }
             catch (Exception ex)
             {
-                ShowNotification($"Ошибка: {ex.Message}", success: false);
+                ShowNotification(LocalizationManager.Format("MainForm.ErrorPrefix", ex.Message), success: false);
             }
         }
 
@@ -318,7 +392,7 @@ namespace AddToAutorun
                 try   { ShellHelper.RegisterInSendTo(Application.ExecutablePath); }
                 catch (Exception ex)
                 {
-                    ShowNotification($"Ошибка добавления в «Отправить»: {ex.Message}", success: false);
+                    ShowNotification(LocalizationManager.Format("MainForm.SendToError", ex.Message), success: false);
                     return;
                 }
             }
@@ -328,16 +402,16 @@ namespace AddToAutorun
         private void RefreshSendToButton()
         {
             btnSendTo.Text = ShellHelper.IsRegisteredInSendTo()
-                ? "Убрать из меню «Отправить»"
-                : "Добавить в меню «Отправить»";
+                ? LocalizationManager.Get("MainForm.SendToRemoveButton")
+                : LocalizationManager.Get("MainForm.SendToAddButton");
         }
 
         // ── About ─────────────────────────────────────────────────────────────
         private void BtnAbout_Click(object? sender, EventArgs e)
         {
             MessageBox.Show(
-                "Автозапуск приложений\n\nДобавление программ в автозапуск Windows через реестр.\n\nДостаточно перетащить .exe файл в окно или использовать меню «Отправить».",
-                "О программе",
+                LocalizationManager.Get("MainForm.AboutMessage"),
+                LocalizationManager.Get("MainForm.AboutTitle"),
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
         }
@@ -353,9 +427,21 @@ namespace AddToAutorun
             path.CloseFigure();
             g.DrawPath(pen, path);
         }
+
+        private sealed class LanguageOption
+        {
+            public LanguageOption(AppLanguage language, string displayName)
+            {
+                Language = language;
+                DisplayName = displayName;
+            }
+
+            public AppLanguage Language { get; }
+
+            public string DisplayName { get; }
+
+            public override string ToString() => DisplayName;
+        }
     }
 }
-
-
-
 

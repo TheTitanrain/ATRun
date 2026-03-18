@@ -9,6 +9,8 @@ namespace AddToAutorun
         [STAThread]
         static void Main(string[] args)
         {
+            LocalizationManager.Initialize();
+
             // Silent mode: AddToAutorun.exe <filePath> [/hklm]
             if (args.Length > 0)
             {

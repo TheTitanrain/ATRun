@@ -11,6 +11,8 @@ namespace AddToAutorun
         private Panel      pnlHeader;
         private Label      lblTitle;
         private Label      lblSubtitle;
+        private Label      lblLanguage;
+        private ComboBox   cmbLanguage;
         private Button     btnAbout;
 
         // ── Drop zone (shown when no file loaded) ─────────────────────────────
@@ -60,7 +62,7 @@ namespace AddToAutorun
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox     = false;
             StartPosition   = FormStartPosition.CenterScreen;
-            Text            = "Автозапуск приложений";
+            Text            = "Startup Applications";
             BackColor       = Color.FromArgb(243, 243, 243);
             DoubleBuffered  = true;
             AllowDrop       = true;
@@ -81,7 +83,7 @@ namespace AddToAutorun
 
             lblTitle = new Label
             {
-                Text      = "Автозапуск приложений",
+                Text      = "Startup Applications",
                 Font      = new Font("Segoe UI", 13f, FontStyle.Bold),
                 ForeColor = Color.FromArgb(26, 26, 26),
                 AutoSize  = true,
@@ -90,18 +92,40 @@ namespace AddToAutorun
             };
             lblSubtitle = new Label
             {
-                Text      = "Добавить .exe в список автозагрузки Windows",
+                Text      = "Add .exe files to the Windows startup list",
                 Font      = new Font("Segoe UI", 8.5f),
                 ForeColor = Color.FromArgb(115, 115, 115),
                 AutoSize  = true,
                 Location  = new Point(16, 38),
                 BackColor = Color.Transparent,
             };
-            btnAbout = MakeIconButton("ℹ", new Point(420, 16));
+            lblLanguage = new Label
+            {
+                Text      = "Language",
+                Font      = new Font("Segoe UI", 8f),
+                ForeColor = Color.FromArgb(115, 115, 115),
+                AutoSize  = true,
+                Location  = new Point(286, 12),
+                BackColor = Color.Transparent,
+                Anchor    = AnchorStyles.Top | AnchorStyles.Right,
+            };
+            cmbLanguage = new ComboBox
+            {
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                Location      = new Point(286, 29),
+                Size          = new Size(128, 23),
+                Font          = new Font("Segoe UI", 9f),
+                Anchor        = AnchorStyles.Top | AnchorStyles.Right,
+                IntegralHeight = false,
+            };
+            btnAbout = MakeIconButton("ℹ", new Point(420, 18));
+            btnAbout.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnAbout.Click += BtnAbout_Click;
 
             pnlHeader.Controls.Add(lblTitle);
             pnlHeader.Controls.Add(lblSubtitle);
+            pnlHeader.Controls.Add(lblLanguage);
+            pnlHeader.Controls.Add(cmbLanguage);
             pnlHeader.Controls.Add(btnAbout);
 
             // ── Drop zone ─────────────────────────────────────────────────────
@@ -131,7 +155,7 @@ namespace AddToAutorun
             };
             lblDropHint = new Label
             {
-                Text      = "Перетащите файл сюда",
+                Text      = "Drop a file here",
                 AutoSize  = false,
                 Size      = new Size(428, 24),
                 Location  = new Point(0, 48),
@@ -144,7 +168,7 @@ namespace AddToAutorun
             };
             lnkBrowse = new LinkLabel
             {
-                Text      = "или выберите файл",
+                Text      = "or choose a file",
                 AutoSize  = false,
                 Size      = new Size(428, 20),
                 Location  = new Point(0, 76),
@@ -215,7 +239,7 @@ namespace AddToAutorun
 
             lblHiveLabel = new Label
             {
-                Text      = "Добавить для:",
+                Text      = "Add for:",
                 AutoSize  = true,
                 Location  = new Point(0, 0),
                 ForeColor = Color.FromArgb(80, 80, 80),
@@ -224,7 +248,7 @@ namespace AddToAutorun
 
             btnHkcu = new Button
             {
-                Text      = "Текущего пользователя",
+                Text      = "Current user",
                 Size      = new Size(210, 32),
                 Location  = new Point(0, 34),
                 FlatStyle = FlatStyle.Flat,
@@ -235,7 +259,7 @@ namespace AddToAutorun
 
             btnHklm = new Button
             {
-                Text      = "Всех пользователей",
+                Text      = "All users",
                 Size      = new Size(210, 32),
                 Location  = new Point(218, 34),
                 FlatStyle = FlatStyle.Flat,
@@ -251,7 +275,7 @@ namespace AddToAutorun
             // ── Add button ────────────────────────────────────────────────────
             btnAdd = new Button
             {
-                Text      = "Добавить в автозапуск",
+                Text      = "Add to startup",
                 Location  = new Point(16, 267),
                 Size      = new Size(428, 42),
                 FlatStyle = FlatStyle.Flat,
@@ -295,7 +319,7 @@ namespace AddToAutorun
 
             btnManage = new Button
             {
-                Text      = "Управление автозапуском",
+                Text      = "Manage startup",
                 Location  = new Point(12, 10),
                 Size      = new Size(204, 32),
                 FlatStyle = FlatStyle.Flat,
@@ -309,6 +333,7 @@ namespace AddToAutorun
 
             btnSendTo = new Button
             {
+                Text      = "Add to 'Send to' menu",
                 Location  = new Point(244, 10),
                 Size      = new Size(204, 32),
                 FlatStyle = FlatStyle.Flat,
@@ -349,5 +374,3 @@ namespace AddToAutorun
         };
     }
 }
-
-

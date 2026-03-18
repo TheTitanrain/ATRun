@@ -33,7 +33,7 @@ namespace AddToAutorun
             FormBorderStyle = FormBorderStyle.Sizable;
             MaximizeBox     = false;
             StartPosition   = FormStartPosition.CenterParent;
-            Text            = "Управление автозапуском";
+            Text            = "Startup Entries";
             BackColor       = Color.FromArgb(243, 243, 243);
             DoubleBuffered  = true;
             Font            = new Font("Segoe UI", 9f);
@@ -53,7 +53,7 @@ namespace AddToAutorun
 
             lblTitle = new Label
             {
-                Text      = "Записи автозапуска",
+                Text      = "Startup Entries",
                 Font      = new Font("Segoe UI", 12f, FontStyle.Bold),
                 ForeColor = Color.FromArgb(26, 26, 26),
                 AutoSize  = true,
@@ -94,7 +94,7 @@ namespace AddToAutorun
 
             lblEmpty = new Label
             {
-                Text      = "Список автозапуска пуст.",
+                Text      = "The startup list is empty.",
                 AutoSize  = false,
                 Size      = new Size(520, 80),
                 TextAlign = ContentAlignment.MiddleCenter,
@@ -122,7 +122,7 @@ namespace AddToAutorun
 
             btnClose = new Button
             {
-                Text      = "Закрыть",
+                Text      = "Close",
                 Location  = new Point(12, 10),
                 Size      = new Size(100, 32),
                 FlatStyle = FlatStyle.Flat,
