@@ -272,7 +272,7 @@ namespace ATRun
 
         private void LayoutHiveButtons()
         {
-            const int buttonTop = 34;
+            const int buttonTop = 20;
             const int buttonGap = 8;
             int buttonWidth = (pnlHive.ClientSize.Width - buttonGap) / 2;
 

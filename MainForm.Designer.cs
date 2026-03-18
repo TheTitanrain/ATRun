@@ -58,7 +58,7 @@ namespace ATRun
 
             // ── Form ──────────────────────────────────────────────────────────
             Icon            = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
-            ClientSize      = new Size(460, 410);
+            ClientSize      = new Size(460, 350);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox     = false;
             StartPosition   = FormStartPosition.CenterScreen;
@@ -118,7 +118,7 @@ namespace ATRun
             // ── Drop zone ─────────────────────────────────────────────────────
             pnlDropZone = new Panel
             {
-                Location  = new Point(16, 74),
+                Location  = new Point(16, 72),
                 Size      = new Size(428, 100),
                 BackColor = Color.Transparent,
                 Cursor    = Cursors.Hand,
@@ -177,7 +177,7 @@ namespace ATRun
             // ── File card ─────────────────────────────────────────────────────
             pnlFileCard = new Panel
             {
-                Location  = new Point(16, 74),
+                Location  = new Point(16, 72),
                 Size      = new Size(428, 100),
                 BackColor = Color.White,
                 Visible   = false,
@@ -233,8 +233,8 @@ namespace ATRun
             // ── Hive selector ─────────────────────────────────────────────────
             pnlHive = new Panel
             {
-                Location  = new Point(16, 183),
-                Size      = new Size(428, 74),
+                Location  = new Point(16, 180),
+                Size      = new Size(428, 60),
                 BackColor = Color.Transparent,
             };
 
@@ -277,7 +277,7 @@ namespace ATRun
             btnAdd = new Button
             {
                 Text      = "Add to startup",
-                Location  = new Point(16, 267),
+                Location  = new Point(16, 248),
                 Size      = new Size(428, 42),
                 FlatStyle = FlatStyle.Flat,
                 Font      = new Font("Segoe UI", 10f, FontStyle.Bold),
@@ -290,8 +290,8 @@ namespace ATRun
             // ── Notification bar ──────────────────────────────────────────────
             pnlNotify = new Panel
             {
-                Location  = new Point(16, 317),
-                Size      = new Size(428, 32),
+                Location  = new Point(16, 248),
+                Size      = new Size(428, 42),
                 Visible   = false,
             };
             lblNotify = new Label
@@ -308,7 +308,7 @@ namespace ATRun
             // ── Footer ────────────────────────────────────────────────────────
             pnlFooter = new Panel
             {
-                Location  = new Point(0, 358),
+                Location  = new Point(0, 298),
                 Size      = new Size(460, 52),
                 BackColor = Color.White,
             };
@@ -352,8 +352,8 @@ namespace ATRun
             Controls.Add(pnlDropZone);
             Controls.Add(pnlFileCard);
             Controls.Add(pnlHive);
-            Controls.Add(btnAdd);
             Controls.Add(pnlNotify);
+            Controls.Add(btnAdd);
             Controls.Add(pnlFooter);
 
             ResumeLayout(false);
