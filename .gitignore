@@ -41,3 +41,5 @@ packages/
 *.seed
 *.tmp
 *.temp
+# Local assistant instructions
+CLAUDE.md
