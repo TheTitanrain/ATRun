@@ -12,12 +12,15 @@ namespace AddToAutorun
         private static readonly Color HklmPurple = Color.FromArgb(135, 100, 184);
         private static readonly Color ErrorRed   = Color.FromArgb(196,  43,  28);
 
+        private const int EntryHeight = 58;
+
         private List<AutorunEntry> _entries = new();
 
         public AutorunListForm()
         {
             InitializeComponent();
-            Resize += (_, _) => RefreshEntryWidths();
+            Shown += (_, _) => RefreshEntryWidths();
+            pnlScroll.ClientSizeChanged += (_, _) => RefreshEntryWidths();
             LoadEntries();
         }
 
@@ -40,6 +43,7 @@ namespace AddToAutorun
             }
 
             UpdateCountLabel();
+            RefreshEntryWidths();
         }
 
         private void UpdateCountLabel()
@@ -54,59 +58,69 @@ namespace AddToAutorun
 
         private void RefreshEntryWidths()
         {
-            int w = pnlScroll.ClientSize.Width - (pnlScroll.VerticalScroll.Visible ? 17 : 0);
-            flowEntries.Width = w;
-            foreach (Control c in flowEntries.Controls)
-                c.Width = w;
+            int scrollbarWidth = pnlScroll.VerticalScroll.Visible ? SystemInformation.VerticalScrollBarWidth : 0;
+            int width = Math.Max(0, pnlScroll.ClientSize.Width - scrollbarWidth);
+
+            flowEntries.Width = width;
+            lblEmpty.Width = width;
+
+            foreach (Control control in flowEntries.Controls)
+                control.Width = width;
         }
 
         // ── Build a single entry row ──────────────────────────────────────────
         private Panel BuildEntryPanel(AutorunEntry entry, int index)
         {
-            int w = pnlScroll.ClientSize.Width;
+            int width = Math.Max(0, pnlScroll.ClientSize.Width);
 
             var pnl = new Panel
             {
-                Size      = new Size(w, 58),
+                Size      = new Size(width, EntryHeight),
                 BackColor = index % 2 == 0 ? Color.White : Color.FromArgb(248, 248, 250),
                 Tag       = entry,
+                Margin    = Padding.Empty,
             };
 
             // Left color bar (HKCU=blue, HKLM=purple)
             var bar = new Panel
             {
                 Location  = new Point(0, 0),
-                Size      = new Size(5, 58),
+                Size      = new Size(5, EntryHeight),
                 BackColor = entry.Hive == AutorunHive.LocalMachine ? HklmPurple : HkcuBlue,
             };
 
             var lblName = new Label
             {
-                Text      = entry.Name,
-                Location  = new Point(18, 8),
-                AutoSize  = false,
-                Size      = new Size(w - 120, 22),
-                Font      = new Font("Segoe UI", 10f, FontStyle.Bold),
-                ForeColor = Color.FromArgb(26, 26, 26),
-                BackColor = Color.Transparent,
+                Text         = entry.Name,
+                Location     = new Point(18, 8),
+                AutoSize     = false,
+                AutoEllipsis = true,
+                Size         = new Size(Math.Max(0, width - 120), 22),
+                Anchor       = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,
+                Font         = new Font("Segoe UI", 10f, FontStyle.Bold),
+                ForeColor    = Color.FromArgb(26, 26, 26),
+                BackColor    = Color.Transparent,
             };
 
             var lblPath = new Label
             {
-                Text      = entry.FullPath,
-                Location  = new Point(18, 32),
-                AutoSize  = false,
-                Size      = new Size(w - 130, 18),
-                Font      = new Font("Segoe UI", 7.5f),
-                ForeColor = Color.FromArgb(115, 115, 115),
-                BackColor = Color.Transparent,
+                Text         = entry.FullPath,
+                Location     = new Point(18, 32),
+                AutoSize     = false,
+                AutoEllipsis = true,
+                Size         = new Size(Math.Max(0, width - 130), 18),
+                Anchor       = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom,
+                Font         = new Font("Segoe UI", 7.5f),
+                ForeColor    = Color.FromArgb(115, 115, 115),
+                BackColor    = Color.Transparent,
             };
 
             var lblHive = new Label
             {
                 Text      = entry.Hive == AutorunHive.LocalMachine ? "HKLM" : "HKCU",
-                Location  = new Point(w - 108, 32),
+                Location  = new Point(Math.Max(18, width - 108), 32),
                 AutoSize  = true,
+                Anchor    = AnchorStyles.Right | AnchorStyles.Bottom,
                 Font      = new Font("Segoe UI", 7.5f, FontStyle.Bold),
                 ForeColor = entry.Hive == AutorunHive.LocalMachine ? HklmPurple : HkcuBlue,
                 BackColor = Color.Transparent,
@@ -115,8 +129,9 @@ namespace AddToAutorun
             var btnDel = new Button
             {
                 Text      = "Удалить",
-                Location  = new Point(w - 90, 14),
+                Location  = new Point(Math.Max(18, width - 90), 14),
                 Size      = new Size(76, 28),
+                Anchor    = AnchorStyles.Top | AnchorStyles.Right,
                 FlatStyle = FlatStyle.Flat,
                 ForeColor = ErrorRed,
                 BackColor = Color.Transparent,
