@@ -112,6 +112,11 @@ namespace ATRun
                 IntegralHeight = false,
             };
             btnAbout = MakeIconButton("ℹ", Point.Empty);
+            btnAbout.Size      = new Size(32, 32);
+            btnAbout.Font      = new Font("Segoe UI", 13f);
+            btnAbout.ForeColor = Color.FromArgb(100, 100, 100);
+            btnAbout.FlatAppearance.BorderSize        = 0;
+            btnAbout.FlatAppearance.MouseOverBackColor = Color.FromArgb(232, 232, 232);
             btnAbout.Click += BtnAbout_Click;
 
             pnlHeader.Controls.Add(lblTitle);
@@ -327,11 +332,12 @@ namespace ATRun
                 Size      = new Size(204, 32),
                 FlatStyle = FlatStyle.Flat,
                 ForeColor = Color.FromArgb(0, 103, 192),
-                BackColor = Color.Transparent,
+                BackColor = Color.FromArgb(235, 244, 255),
                 Cursor    = Cursors.Hand,
             };
-            btnManage.FlatAppearance.BorderSize = 0;
-            btnManage.FlatAppearance.MouseOverBackColor = Color.FromArgb(230, 240, 255);
+            btnManage.FlatAppearance.BorderSize  = 1;
+            btnManage.FlatAppearance.BorderColor = Color.FromArgb(0, 103, 192);
+            btnManage.FlatAppearance.MouseOverBackColor = Color.FromArgb(210, 232, 255);
             btnManage.Click += BtnManage_Click;
 
             btnSendTo = new Button
@@ -341,11 +347,12 @@ namespace ATRun
                 Size      = new Size(204, 32),
                 FlatStyle = FlatStyle.Flat,
                 ForeColor = Color.FromArgb(0, 103, 192),
-                BackColor = Color.Transparent,
+                BackColor = Color.FromArgb(235, 244, 255),
                 Cursor    = Cursors.Hand,
             };
-            btnSendTo.FlatAppearance.BorderSize = 0;
-            btnSendTo.FlatAppearance.MouseOverBackColor = Color.FromArgb(230, 240, 255);
+            btnSendTo.FlatAppearance.BorderSize  = 1;
+            btnSendTo.FlatAppearance.BorderColor = Color.FromArgb(0, 103, 192);
+            btnSendTo.FlatAppearance.MouseOverBackColor = Color.FromArgb(210, 232, 255);
             btnSendTo.Click += BtnSendTo_Click;
 
             pnlFooter.Controls.Add(btnManage);
