@@ -105,21 +105,16 @@ namespace AddToAutorun
                 Font      = new Font("Segoe UI", 8f),
                 ForeColor = Color.FromArgb(115, 115, 115),
                 AutoSize  = true,
-                Location  = new Point(286, 12),
                 BackColor = Color.Transparent,
-                Anchor    = AnchorStyles.Top | AnchorStyles.Right,
             };
             cmbLanguage = new ComboBox
             {
-                DropDownStyle = ComboBoxStyle.DropDownList,
-                Location      = new Point(286, 29),
-                Size          = new Size(128, 23),
-                Font          = new Font("Segoe UI", 9f),
-                Anchor        = AnchorStyles.Top | AnchorStyles.Right,
+                DropDownStyle  = ComboBoxStyle.DropDownList,
+                Size           = new Size(128, 23),
+                Font           = new Font("Segoe UI", 9f),
                 IntegralHeight = false,
             };
-            btnAbout = MakeIconButton("ℹ", new Point(420, 18));
-            btnAbout.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnAbout = MakeIconButton("ℹ", Point.Empty);
             btnAbout.Click += BtnAbout_Click;
 
             pnlHeader.Controls.Add(lblTitle);
@@ -127,6 +122,7 @@ namespace AddToAutorun
             pnlHeader.Controls.Add(lblLanguage);
             pnlHeader.Controls.Add(cmbLanguage);
             pnlHeader.Controls.Add(btnAbout);
+            pnlHeader.ClientSizeChanged += (_, _) => LayoutHeader();
 
             // ── Drop zone ─────────────────────────────────────────────────────
             pnlDropZone = new Panel
@@ -206,7 +202,7 @@ namespace AddToAutorun
             lblFileName = new Label
             {
                 AutoSize  = false,
-                Size      = new Size(340, 26),
+                Size      = new Size(298, 26),
                 Location  = new Point(72, 18),
                 Font      = new Font("Segoe UI", 11f, FontStyle.Bold),
                 ForeColor = Color.FromArgb(26, 26, 26),
@@ -215,13 +211,27 @@ namespace AddToAutorun
             lblFilePath = new Label
             {
                 AutoSize  = false,
-                Size      = new Size(340, 34),
+                Size      = new Size(298, 40),
                 Location  = new Point(72, 48),
                 Font      = new Font("Segoe UI", 8f),
                 ForeColor = Color.FromArgb(115, 115, 115),
                 BackColor = Color.Transparent,
             };
-            btnClear = MakeIconButton("✕", new Point(396, 8));
+            // Clear button: fixed position, right-centre of the card
+            btnClear = new Button
+            {
+                Text      = "✕",
+                Size      = new Size(32, 32),
+                Location  = new Point(428 - 32 - 10, (100 - 32) / 2),  // (386, 34)
+                FlatStyle = FlatStyle.Flat,
+                Font      = new Font("Segoe UI", 10f),
+                Cursor    = Cursors.Hand,
+                BackColor = Color.FromArgb(235, 235, 235),
+                ForeColor = Color.FromArgb(80, 80, 80),
+                TabStop   = false,
+            };
+            btnClear.FlatAppearance.BorderColor        = Color.FromArgb(200, 200, 200);
+            btnClear.FlatAppearance.MouseOverBackColor = Color.FromArgb(215, 215, 215);
             btnClear.Click += BtnClear_Click;
 
             pnlFileCard.Controls.Add(picFileIcon);

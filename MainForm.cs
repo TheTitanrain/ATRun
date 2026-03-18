@@ -263,6 +263,14 @@ namespace AddToAutorun
             LayoutFooterButtons();
         }
 
+        private void LayoutHeader()
+        {
+            int right = pnlHeader.ClientSize.Width;
+            btnAbout.Location = new Point(right - btnAbout.Width - 4, (pnlHeader.Height - btnAbout.Height) / 2);
+            cmbLanguage.Location = new Point(btnAbout.Left - cmbLanguage.Width - 8, 29);
+            lblLanguage.Location = new Point(cmbLanguage.Left, 12);
+        }
+
         private void LayoutHiveButtons()
         {
             const int buttonTop = 34;
