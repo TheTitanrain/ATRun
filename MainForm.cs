@@ -42,9 +42,12 @@ namespace AddToAutorun
                 c.DragDrop  += MainForm_DragDrop;
             }
 
+            Resize += (_, _) => LayoutAdaptiveSections();
+
             RefreshHiveButtons();
             RefreshAddButton();
             RefreshSendToButton();
+            LayoutAdaptiveSections();
         }
 
         // ── Form load: handle command-line arg ────────────────────────────────
@@ -178,6 +181,39 @@ namespace AddToAutorun
         // ── Hive toggle ───────────────────────────────────────────────────────
         private void BtnHkcu_Click(object? sender, EventArgs e) { _hive = AutorunHive.CurrentUser;  RefreshHiveButtons(); }
         private void BtnHklm_Click(object? sender, EventArgs e) { _hive = AutorunHive.LocalMachine; RefreshHiveButtons(); }
+
+        private void LayoutAdaptiveSections()
+        {
+            LayoutHiveButtons();
+            LayoutFooterButtons();
+        }
+
+        private void LayoutHiveButtons()
+        {
+            const int buttonTop = 34;
+            const int buttonGap = 8;
+            int buttonWidth = (pnlHive.ClientSize.Width - buttonGap) / 2;
+
+            btnHkcu.Location = new Point(0, buttonTop);
+            btnHkcu.Size = new Size(buttonWidth, btnHkcu.Height);
+
+            btnHklm.Location = new Point(btnHkcu.Right + buttonGap, buttonTop);
+            btnHklm.Size = new Size(pnlHive.ClientSize.Width - btnHklm.Left, btnHklm.Height);
+        }
+
+        private void LayoutFooterButtons()
+        {
+            const int horizontalPadding = 12;
+            const int buttonGap = 8;
+            int availableWidth = pnlFooter.ClientSize.Width - (horizontalPadding * 2);
+            int buttonWidth = (availableWidth - buttonGap) / 2;
+
+            btnManage.Location = new Point(horizontalPadding, btnManage.Top);
+            btnManage.Size = new Size(buttonWidth, btnManage.Height);
+
+            btnSendTo.Location = new Point(btnManage.Right + buttonGap, btnSendTo.Top);
+            btnSendTo.Size = new Size(pnlFooter.ClientSize.Width - horizontalPadding - btnSendTo.Left, btnSendTo.Height);
+        }
 
         private void RefreshHiveButtons()
         {

@@ -56,7 +56,7 @@ namespace AddToAutorun
             SuspendLayout();
 
             // ── Form ──────────────────────────────────────────────────────────
-            ClientSize      = new Size(460, 370);
+            ClientSize      = new Size(460, 410);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox     = false;
             StartPosition   = FormStartPosition.CenterScreen;
@@ -209,7 +209,7 @@ namespace AddToAutorun
             pnlHive = new Panel
             {
                 Location  = new Point(16, 183),
-                Size      = new Size(428, 36),
+                Size      = new Size(428, 74),
                 BackColor = Color.Transparent,
             };
 
@@ -217,7 +217,7 @@ namespace AddToAutorun
             {
                 Text      = "Добавить для:",
                 AutoSize  = true,
-                Location  = new Point(0, 9),
+                Location  = new Point(0, 0),
                 ForeColor = Color.FromArgb(80, 80, 80),
                 BackColor = Color.Transparent,
             };
@@ -225,8 +225,8 @@ namespace AddToAutorun
             btnHkcu = new Button
             {
                 Text      = "Текущего пользователя",
-                Size      = new Size(186, 32),
-                Location  = new Point(120, 2),
+                Size      = new Size(210, 32),
+                Location  = new Point(0, 34),
                 FlatStyle = FlatStyle.Flat,
                 Cursor    = Cursors.Hand,
             };
@@ -236,8 +236,8 @@ namespace AddToAutorun
             btnHklm = new Button
             {
                 Text      = "Всех пользователей",
-                Size      = new Size(154, 32),
-                Location  = new Point(312, 2),
+                Size      = new Size(210, 32),
+                Location  = new Point(218, 34),
                 FlatStyle = FlatStyle.Flat,
                 Cursor    = Cursors.Hand,
             };
@@ -252,7 +252,7 @@ namespace AddToAutorun
             btnAdd = new Button
             {
                 Text      = "Добавить в автозапуск",
-                Location  = new Point(16, 228),
+                Location  = new Point(16, 267),
                 Size      = new Size(428, 42),
                 FlatStyle = FlatStyle.Flat,
                 Font      = new Font("Segoe UI", 10f, FontStyle.Bold),
@@ -265,7 +265,7 @@ namespace AddToAutorun
             // ── Notification bar ──────────────────────────────────────────────
             pnlNotify = new Panel
             {
-                Location  = new Point(16, 278),
+                Location  = new Point(16, 317),
                 Size      = new Size(428, 32),
                 Visible   = false,
             };
@@ -283,7 +283,7 @@ namespace AddToAutorun
             // ── Footer ────────────────────────────────────────────────────────
             pnlFooter = new Panel
             {
-                Location  = new Point(0, 318),
+                Location  = new Point(0, 358),
                 Size      = new Size(460, 52),
                 BackColor = Color.White,
             };
