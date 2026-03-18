@@ -1,33 +1,40 @@
 # ATRun
 
-ATRun is a small Windows Forms utility for managing Windows autorun entries through the registry.
+ATRun is a small Windows Forms utility (.NET 8) for managing Windows startup registry entries.
 
 ## Features
 
-- Add `.exe` files to autorun with drag and drop or the file picker.
-- Choose whether the entry is created for the current user (`HKCU`) or all users (`HKLM`).
-- Review and delete existing autorun entries in the startup management window.
-- Register the application in the Windows `Send to` menu.
-- Switch the UI between English and Russian from the main window.
+- Add `.exe` files to startup via drag & drop or the file picker.
+- Choose between current user (`HKCU`) and all users (`HKLM`) registry hives.
+- Review and delete existing startup entries in the management window.
+- Register ATRun in the Windows **Send to** menu for one-click registration from Explorer.
+- UI available in **English** and **Russian** — language is auto-detected from Windows on first launch and can be changed from the main window.
 
-## Localization
+## Two Operating Modes
 
-The application now supports both English and Russian.
+**GUI mode** (no arguments): opens the main window.
 
-- On the first launch, the UI language follows the current Windows UI culture.
-- The language can be changed from the selector in the main window.
-- The selected language is saved in the user's local application settings and reused on the next launch.
-- The `Send to` shortcut is recreated with the active language name while still recognizing the previous Russian shortcut name for compatibility.
+**Silent/CLI mode**: registers a file without showing any UI.
 
-## Recent UI Update
-
-The autorun management window recalculates entry widths after the form is shown and whenever the scroll area changes size. Entry rows, labels, and action buttons stay aligned with the full available window width instead of remaining narrow after the initial layout pass.
-
-## Verification
-
-Use the standard .NET CLI commands from the repository root:
-
-```powershell
-dotnet build ATRun.sln -v minimal
-dotnet test ATRun.sln -v minimal
+```cmd
+ATRun.exe <filePath> [/hklm]
 ```
+
+- Silently exits if the file is already registered or if an error occurs.
+- `.lnk` shortcuts are resolved to their target automatically.
+- Omit `/hklm` to register for the current user only.
+
+## Build & Run
+
+```bash
+dotnet build
+dotnet run
+dotnet run -- "C:\path\to\app.exe" [/hklm]
+```
+
+Output binary: `bin/Debug/net8.0-windows/ATRun.exe`
+
+## Notes
+
+- Writing to `HKLM` requires administrator privileges. The app runs as `asInvoker` — the caller is responsible for elevation.
+- Language preference is saved to `%LOCALAPPDATA%\ATRun\settings.json`.
