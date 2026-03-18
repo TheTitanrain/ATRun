@@ -4,7 +4,7 @@ using System.Drawing.Drawing2D;
 using System.IO;
 using System.Windows.Forms;
 
-namespace AddToAutorun
+namespace ATRun
 {
     public partial class MainForm : Form
     {

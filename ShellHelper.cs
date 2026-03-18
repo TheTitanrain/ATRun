@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
-namespace AddToAutorun
+namespace ATRun
 {
     internal static class ShellHelper
     {

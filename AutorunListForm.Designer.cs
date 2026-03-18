@@ -1,7 +1,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace AddToAutorun
+namespace ATRun
 {
     partial class AutorunListForm
     {

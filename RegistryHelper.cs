@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Win32;
 
-namespace AddToAutorun
+namespace ATRun
 {
     /// <summary>All registry reads/writes for the autorun key.</summary>
     internal static class RegistryHelper

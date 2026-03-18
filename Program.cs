@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 
-namespace AddToAutorun
+namespace ATRun
 {
     internal static class Program
     {
@@ -11,7 +11,7 @@ namespace AddToAutorun
         {
             LocalizationManager.Initialize();
 
-            // Silent mode: AddToAutorun.exe <filePath> [/hklm]
+            // Silent mode: ATRun.exe <filePath> [/hklm]
             if (args.Length > 0)
             {
                 string filePath = args[0];
