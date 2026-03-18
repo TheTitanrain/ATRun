@@ -8,5 +8,6 @@
     <AssemblyName>ATRun</AssemblyName>
     <RootNamespace>ATRun</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>atrun.ico</ApplicationIcon>
   </PropertyGroup>
 </Project>

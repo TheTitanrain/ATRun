@@ -58,6 +58,7 @@ namespace ATRun
             SuspendLayout();
 
             // ── Form ──────────────────────────────────────────────────────────
+            Icon            = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
             ClientSize      = new Size(460, 410);
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox     = false;
