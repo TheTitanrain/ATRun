@@ -73,6 +73,8 @@ namespace AddToAutorun
         {
             if (ShellHelper.IsRegisteredInSendTo())
             {
+                // Recreate the shortcut with the new language name.
+                // Ignore errors — ApplyLocalization below will refresh the button state.
                 try { ShellHelper.RegisterInSendTo(Application.ExecutablePath); }
                 catch { }
             }
@@ -84,7 +86,6 @@ namespace AddToAutorun
         private void InitializeLanguageSelector()
         {
             cmbLanguage.SelectedIndexChanged += CmbLanguage_SelectedIndexChanged;
-            RefreshLanguageSelector();
         }
 
         private void CmbLanguage_SelectedIndexChanged(object? sender, EventArgs e)

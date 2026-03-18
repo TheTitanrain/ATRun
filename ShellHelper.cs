@@ -119,7 +119,7 @@ namespace AddToAutorun
             foreach (string path in GetKnownSendToLinkPaths())
             {
                 if (!path.Equals(targetPath, StringComparison.OrdinalIgnoreCase) && File.Exists(path))
-                    File.Delete(path);
+                    try { File.Delete(path); } catch { }
             }
         }
 
@@ -128,7 +128,7 @@ namespace AddToAutorun
             foreach (string path in GetKnownSendToLinkPaths())
             {
                 if (File.Exists(path))
-                    File.Delete(path);
+                    try { File.Delete(path); } catch { }
             }
         }
 
