@@ -9,7 +9,6 @@ namespace ATRun
 
         // ── Header ────────────────────────────────────────────────────────────
         private Panel      pnlHeader;
-        private Label      lblTitle;
         private Label      lblSubtitle;
         private Label      lblLanguage;
         private ComboBox   cmbLanguage;
@@ -78,22 +77,13 @@ namespace ATRun
             };
             pnlHeader.Paint += pnlHeader_Paint;
 
-            lblTitle = new Label
-            {
-                Text      = "Startup Applications",
-                Font      = new Font("Segoe UI", 13f, FontStyle.Bold),
-                ForeColor = Color.FromArgb(26, 26, 26),
-                AutoSize  = true,
-                Location  = new Point(16, 10),
-                BackColor = Color.Transparent,
-            };
             lblSubtitle = new Label
             {
                 Text      = "Add .exe files to the Windows startup list",
                 Font      = new Font("Segoe UI", 8.5f),
                 ForeColor = Color.FromArgb(115, 115, 115),
                 AutoSize  = true,
-                Location  = new Point(16, 38),
+                Location  = new Point(16, 23),
                 BackColor = Color.Transparent,
             };
             lblLanguage = new Label
@@ -119,7 +109,6 @@ namespace ATRun
             btnAbout.FlatAppearance.MouseOverBackColor = Color.FromArgb(232, 232, 232);
             btnAbout.Click += BtnAbout_Click;
 
-            pnlHeader.Controls.Add(lblTitle);
             pnlHeader.Controls.Add(lblSubtitle);
             pnlHeader.Controls.Add(lblLanguage);
             pnlHeader.Controls.Add(cmbLanguage);

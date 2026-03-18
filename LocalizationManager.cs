@@ -26,7 +26,7 @@ namespace ATRun
         private static readonly IReadOnlyDictionary<string, string> EnglishTexts =
             new Dictionary<string, string>(StringComparer.Ordinal)
             {
-                ["App.Title"] = "Startup Applications",
+                ["App.Title"] = "ATRun",
                 ["MainForm.Subtitle"] = "Add .exe files to the Windows startup list",
                 ["MainForm.DropHint"] = "Drop a file here",
                 ["MainForm.BrowseLink"] = "or choose a file",
@@ -52,6 +52,10 @@ namespace ATRun
                 ["MainForm.AboutTitle"] = "About",
                 ["MainForm.AboutMessage"] =
                     "Startup Applications\n\nAdd programs to Windows startup through the registry.\n\nDrag an .exe file into the window or use the 'Send to' menu.",
+                ["About.Title"]       = "About",
+                ["About.Version"]     = "Version {0}",
+                ["About.Description"] = "Add programs to Windows startup through the registry.\nDrag an .exe file into the window or use the 'Send to' menu.",
+                ["About.CloseButton"] = "Close",
                 ["AutorunList.Title"] = "Startup Entries",
                 ["AutorunList.Empty"] = "The startup list is empty.",
                 ["AutorunList.CountZero"] = "No entries",
@@ -70,7 +74,7 @@ namespace ATRun
         private static readonly IReadOnlyDictionary<string, string> RussianTexts =
             new Dictionary<string, string>(StringComparer.Ordinal)
             {
-                ["App.Title"] = "Автозапуск приложений",
+                ["App.Title"] = "ATRun",
                 ["MainForm.Subtitle"] = "Добавить .exe в список автозагрузки Windows",
                 ["MainForm.DropHint"] = "Перетащите файл сюда",
                 ["MainForm.BrowseLink"] = "или выберите файл",
@@ -96,6 +100,10 @@ namespace ATRun
                 ["MainForm.AboutTitle"] = "О программе",
                 ["MainForm.AboutMessage"] =
                     "Автозапуск приложений\n\nДобавление программ в автозапуск Windows через реестр.\n\nДостаточно перетащить .exe файл в окно или использовать меню «Отправить».",
+                ["About.Title"]       = "О программе",
+                ["About.Version"]     = "Версия {0}",
+                ["About.Description"] = "Добавление программ в автозапуск Windows через реестр.\nДостаточно перетащить .exe файл в окно или использовать меню «Отправить».",
+                ["About.CloseButton"] = "Закрыть",
                 ["AutorunList.Title"] = "Записи автозапуска",
                 ["AutorunList.Empty"] = "Список автозапуска пуст.",
                 ["AutorunList.CountZero"] = "Нет записей",

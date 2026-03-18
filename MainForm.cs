@@ -119,7 +119,6 @@ namespace ATRun
         private void ApplyLocalization()
         {
             Text = LocalizationManager.Get("App.Title");
-            lblTitle.Text = LocalizationManager.Get("App.Title");
             lblSubtitle.Text = LocalizationManager.Get("MainForm.Subtitle");
             lblDropHint.Text = LocalizationManager.Get("MainForm.DropHint");
             lnkBrowse.Text = LocalizationManager.Get("MainForm.BrowseLink");
@@ -418,11 +417,8 @@ namespace ATRun
         // ── About ─────────────────────────────────────────────────────────────
         private void BtnAbout_Click(object? sender, EventArgs e)
         {
-            MessageBox.Show(
-                LocalizationManager.Get("MainForm.AboutMessage"),
-                LocalizationManager.Get("MainForm.AboutTitle"),
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            using var form = new AboutForm();
+            form.ShowDialog(this);
         }
 
         // ── Helper: rounded rectangle ─────────────────────────────────────────
