@@ -43,3 +43,4 @@ packages/
 *.temp
 # Local assistant instructions
 CLAUDE.md
+.codex/
