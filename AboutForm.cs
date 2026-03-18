@@ -33,7 +33,6 @@ namespace ATRun
         private void ApplyLocalization()
         {
             Text                = LocalizationManager.Get("About.Title");
-            lblTitle.Text       = LocalizationManager.Get("About.Title");
             lblAppName.Text     = LocalizationManager.Get("App.Title");
             lblVersion.Text     = LocalizationManager.Format("About.Version", GetVersion());
             lblDescription.Text = LocalizationManager.Get("About.Description");

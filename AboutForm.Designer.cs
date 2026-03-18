@@ -7,8 +7,6 @@ namespace ATRun
     {
         private System.ComponentModel.IContainer components = null;
 
-        private Panel      pnlHeader;
-        private Label      lblTitle;
         private PictureBox picIcon;
         private Label      lblAppName;
         private Label      lblVersion;
@@ -28,7 +26,7 @@ namespace ATRun
             SuspendLayout();
 
             // ── Form ──────────────────────────────────────────────────────────
-            ClientSize      = new Size(360, 290);
+            ClientSize      = new Size(360, 250);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox     = false;
             MinimizeBox     = false;
@@ -38,31 +36,11 @@ namespace ATRun
             DoubleBuffered  = true;
             Font            = new Font("Segoe UI", 9f);
 
-            // ── Header ────────────────────────────────────────────────────────
-            pnlHeader = new Panel
-            {
-                Dock      = DockStyle.Top,
-                Height    = 56,
-                BackColor = Color.White,
-            };
-            pnlHeader.Paint += pnlHeader_Paint;
-
-            lblTitle = new Label
-            {
-                Text      = "About",
-                Font      = new Font("Segoe UI", 12f, FontStyle.Bold),
-                ForeColor = Color.FromArgb(26, 26, 26),
-                AutoSize  = true,
-                Location  = new Point(16, 14),
-                BackColor = Color.Transparent,
-            };
-            pnlHeader.Controls.Add(lblTitle);
-
             // ── App icon ──────────────────────────────────────────────────────
             picIcon = new PictureBox
             {
                 Size     = new Size(48, 48),
-                Location = new Point(156, 68),
+                Location = new Point(156, 12),
                 SizeMode = PictureBoxSizeMode.Zoom,
             };
 
@@ -71,7 +49,7 @@ namespace ATRun
             {
                 AutoSize  = false,
                 Size      = new Size(360, 28),
-                Location  = new Point(0, 122),
+                Location  = new Point(0, 66),
                 TextAlign = ContentAlignment.MiddleCenter,
                 Font      = new Font("Segoe UI", 13f, FontStyle.Bold),
                 ForeColor = Color.FromArgb(26, 26, 26),
@@ -83,7 +61,7 @@ namespace ATRun
             {
                 AutoSize  = false,
                 Size      = new Size(360, 18),
-                Location  = new Point(0, 153),
+                Location  = new Point(0, 97),
                 TextAlign = ContentAlignment.MiddleCenter,
                 Font      = new Font("Segoe UI", 8.5f),
                 ForeColor = Color.FromArgb(115, 115, 115),
@@ -94,8 +72,8 @@ namespace ATRun
             lblDescription = new Label
             {
                 AutoSize  = false,
-                Size      = new Size(328, 56),
-                Location  = new Point(16, 178),
+                Size      = new Size(328, 72),
+                Location  = new Point(16, 122),
                 TextAlign = ContentAlignment.TopCenter,
                 Font      = new Font("Segoe UI", 9f),
                 ForeColor = Color.FromArgb(80, 80, 80),
@@ -128,7 +106,6 @@ namespace ATRun
             pnlFooter.Controls.Add(btnClose);
 
             // ── Assemble ──────────────────────────────────────────────────────
-            Controls.Add(pnlHeader);
             Controls.Add(picIcon);
             Controls.Add(lblAppName);
             Controls.Add(lblVersion);
@@ -136,12 +113,6 @@ namespace ATRun
             Controls.Add(pnlFooter);
 
             ResumeLayout(false);
-        }
-
-        private void pnlHeader_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
-        {
-            using var p = new Pen(Color.FromArgb(225, 225, 225));
-            e.Graphics.DrawLine(p, 0, pnlHeader.Height - 1, pnlHeader.Width, pnlHeader.Height - 1);
         }
 
         private void pnlFooter_Paint(object sender, System.Windows.Forms.PaintEventArgs e)
