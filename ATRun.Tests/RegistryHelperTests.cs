@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Principal;
 using Microsoft.Win32;
 using Xunit;
 
@@ -200,6 +201,12 @@ namespace ATRun.Tests
         [Fact]
         public void WriteEntry_HklmWithoutElevation_ThrowsSecurityOrUnauthorizedAccessException()
         {
+            // GitHub Actions and other CI runners execute as admin, so HKLM writes succeed.
+            bool isAdmin = new WindowsPrincipal(WindowsIdentity.GetCurrent())
+                .IsInRole(WindowsBuiltInRole.Administrator);
+            if (isAdmin)
+                return;
+
             string name = _fixture.NewEntryName();
             var entry = new AutorunEntry(name, @"C:\TestApps\" + name + ".exe", AutorunHive.LocalMachine);
 

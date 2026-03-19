@@ -10,7 +10,7 @@ namespace ATRun
         // Overridable in tests to redirect registry I/O away from the real autorun key.
         internal static string? AutorunKeyOverride { get; set; }
 
-        private static string AutorunKey => AutorunKeyOverride ?? AutorunKey;
+        private static string AutorunKey => AutorunKeyOverride ?? FileConstants.AutorunRegKey;
 
         // ── Check whether a given path is already registered ──────────────────
         /// <returns>
