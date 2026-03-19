@@ -24,6 +24,12 @@ ATRun.exe <filePath> [/hklm]
 - `.lnk` shortcuts are resolved to their target automatically.
 - Omit `/hklm` to register for the current user only.
 
+## Requirements
+
+- **OS:** Windows (Windows 10 or later recommended)
+- **Runtime:** [.NET 8 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/8.0)
+- **Privileges:** Standard user for `HKCU` entries; administrator rights required for `HKLM` entries
+
 ## Build & Run
 
 ```bash
