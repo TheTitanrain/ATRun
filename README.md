@@ -2,13 +2,22 @@
 
 ATRun is a small Windows Forms utility (.NET 8) for managing Windows startup registry entries.
 
+## Install
+
+**Online installer — receives automatic updates on every launch:**
+[https://TheTitanrain.github.io/ATRun/ATRun.application](https://TheTitanrain.github.io/ATRun/ATRun.application)
+
+Or download `setup.exe` from the [latest release](../../releases/latest).
+
+> Requires [.NET 8 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/8.0) if installing from `setup.exe`.
+
 ## Features
 
 - Add `.exe` files to startup via drag & drop or the file picker.
 - Choose between current user (`HKCU`) and all users (`HKLM`) registry hives.
-- Review and delete existing startup entries in the management window.
-- Register ATRun in the Windows **Send to** menu for one-click registration from Explorer.
-- UI available in **English** and **Russian** — language is auto-detected from Windows on first launch and can be changed from the main window.
+- Review and delete existing startup entries from the management window.
+- Register ATRun in the Windows **Send To** menu for one-click registration from Explorer.
+- UI in **English** and **Russian** — auto-detected from Windows on first launch, changeable from the main window.
 
 ## Two Operating Modes
 
@@ -26,11 +35,11 @@ ATRun.exe <filePath> [/hklm]
 
 ## Requirements
 
-- **OS:** Windows (Windows 10 or later recommended)
-- **Runtime:** [.NET 8 Desktop Runtime](https://dotnet.microsoft.com/download/dotnet/8.0)
-- **Privileges:** Standard user for `HKCU` entries; administrator rights required for `HKLM` entries
+- **OS:** Windows 10 or later
+- **Runtime:** [.NET 8 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/8.0)
+- **Privileges:** Standard user for `HKCU`; administrator required for `HKLM`
 
-## Build & Run
+## Build
 
 ```bash
 dotnet build
@@ -38,7 +47,7 @@ dotnet run
 dotnet run -- "C:\path\to\app.exe" [/hklm]
 ```
 
-Output binary: `bin/Debug/net8.0-windows/ATRun.exe`
+Output: `bin/Debug/net8.0-windows/ATRun.exe`
 
 ## Notes
 
