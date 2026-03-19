@@ -43,6 +43,7 @@ packages/
 *.temp
 # Local assistant instructions
 CLAUDE.md
+.claude/
 .codex/
 
 atrun.png
