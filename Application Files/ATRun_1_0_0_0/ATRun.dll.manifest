@@ -57,7 +57,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>1FZzd5nU/OOJgxpEnRwZArQAd61SvauBeMW/PsJLiQk=</dsig:DigestValue>
+      <dsig:DigestValue>PANvRUs6ujpbEr6ayCo0yeNQMbzeAYina6Gu4+bYYd0=</dsig:DigestValue>
     </hash>
   </file>
   <file name="ATRun.exe" size="156160">
@@ -66,7 +66,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>RatAnorH6+M/O5uzWgbnC/b/8knqtf50Njct06kiagw=</dsig:DigestValue>
+      <dsig:DigestValue>3Sno2ByguUQx7XdgAQDgXFip9vYm400UbWB2rODMfR0=</dsig:DigestValue>
     </hash>
   </file>
   <file name="atrun.ico" size="4286">
