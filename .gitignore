@@ -29,6 +29,7 @@ _ReSharper*/
 # Test results
 [Tt]est[Rr]esult*/
 [Bb]enchmark[Dd]ot[Nn]et.Artifacts/
+publish-audit/
 
 # NuGet
 packages/
@@ -43,6 +44,7 @@ packages/
 *.temp
 # Local assistant instructions
 CLAUDE.md
+AGENTS.md
 .claude/
 .codex/
 

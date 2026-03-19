@@ -1,6 +1,6 @@
 # ATRun
 
-ATRun is a small Windows Forms utility (.NET 8) for managing Windows startup registry entries.
+ATRun is a small Windows Forms utility (.NET 10) for managing Windows startup registry entries.
 
 ## Install
 
@@ -9,7 +9,7 @@ ATRun is a small Windows Forms utility (.NET 8) for managing Windows startup reg
 
 Or download `setup.exe` from the [latest release](../../releases/latest).
 
-> Requires [.NET 10 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/10.0) if installing from `setup.exe`.
+> `setup.exe` is a **web bootstrapper**: it downloads .NET 10 Desktop Runtime (if not already installed) and the application itself from GitHub Pages. An internet connection is required.
 
 ## Features
 
@@ -47,7 +47,7 @@ dotnet run
 dotnet run -- "C:\path\to\app.exe" [/hklm]
 ```
 
-Output: `bin/Debug/net8.0-windows/ATRun.exe`
+Output: `bin/Debug/net10.0-windows/ATRun.exe`
 
 ## Notes
 
