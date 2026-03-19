@@ -20,10 +20,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup .NET 8
+      - name: Setup .NET 10
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
 
       # Strip leading 'v': v1.2.3 -> 1.2.3
       - name: Extract version from tag
@@ -44,12 +44,21 @@ jobs:
           INSTALL_URL="https://${OWNER}.github.io/${REPO}/"
           echo "install_url=$INSTALL_URL" >> "$GITHUB_OUTPUT"
 
+      # MSBuild (from VS) is required for GenerateBootstrapper (setup.exe).
+      # dotnet CLI MSBuild does not support that task (MSB4803).
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Restore
+        run: dotnet restore ATRun.sln
+
       - name: Run tests
-        run: dotnet test ATRun.Tests/ATRun.Tests.csproj --configuration Release --verbosity normal
+        run: dotnet test ATRun.Tests/ATRun.Tests.csproj --configuration Release --no-restore --verbosity normal
 
       - name: Publish ClickOnce
         run: >
-          dotnet publish ATRun.csproj
+          msbuild ATRun.csproj
+          /target:Publish
           /p:PublishProfile=Properties/PublishProfiles/ClickOnceProfile.pubxml
           /p:Configuration=Release
           /p:ApplicationVersion=${{ steps.version.outputs.version }}.0
@@ -62,6 +71,15 @@ jobs:
           /p:UpdateRequired=False
           /p:PublishDir=publish-output\
 
+      # Prevent git from converting line endings in ClickOnce XML manifests.
+      # Any CRLF<->LF change would break hash validation during installation.
+      - name: Mark ClickOnce files as binary for git
+        shell: bash
+        run: |
+          cat > publish-output/.gitattributes <<'EOF'
+          * binary
+          EOF
+
       # keep_files=true preserves old .deploy bundles so clients mid-update don't get 404s
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
@@ -69,6 +87,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: publish-output
           keep_files: true
+          enable_jekyll: false
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -84,7 +103,7 @@ jobs:
             Click the link above to install via ClickOnce. The application will update
             itself automatically on each launch when a new version is published.
 
-            **Offline installer:**
-            Download `setup.exe` from the assets below.
+            **Web bootstrapper (installs .NET 10 if needed, then downloads the app):**
+            Download `setup.exe` from the assets below. An internet connection is required.
           files: publish-output/setup.exe
           fail_on_unmatched_files: true
