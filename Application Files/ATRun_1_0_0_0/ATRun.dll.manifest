@@ -42,31 +42,31 @@
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="ATRun.deps.json" size="407">
+  <file name="ATRun.deps.json" size="409">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>HjwXmfPgvAg/4q+Ji4NHz/xWZJM1IjFmfTGDQWJUzsA=</dsig:DigestValue>
+      <dsig:DigestValue>STP2rSftn9NoTOLkIuSkHv4XnBHPl9ZH8wXe1Cq98L4=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="ATRun.dll" size="55808">
+  <file name="ATRun.dll" size="60928">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>PANvRUs6ujpbEr6ayCo0yeNQMbzeAYina6Gu4+bYYd0=</dsig:DigestValue>
+      <dsig:DigestValue>SYtTfWZRuVHUQhAoCwT9CTZPOJ5aCoX8R8jKJp1QS4Y=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="ATRun.exe" size="156160">
+  <file name="ATRun.exe" size="166400">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>3Sno2ByguUQx7XdgAQDgXFip9vYm400UbWB2rODMfR0=</dsig:DigestValue>
+      <dsig:DigestValue>gg/SCeZ4PIUY9qpbHtcYMqneV9zy6HupGpEyTAO5Ems=</dsig:DigestValue>
     </hash>
   </file>
   <file name="atrun.ico" size="4286">
@@ -78,13 +78,13 @@
       <dsig:DigestValue>x1+pNokGwpR9tpxBENQa2q3Ps8/ykVS6Eopu8oFarmc=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="ATRun.runtimeconfig.json" size="429">
+  <file name="ATRun.runtimeconfig.json" size="519">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>c7NzhLsAHnjbIBTTKHUOspkDk3Ev1jzQDA9Blls9vpY=</dsig:DigestValue>
+      <dsig:DigestValue>lrwpRt/4eQQA1lLsf43nuwQ+lUmA1ZRwwRJ4i2ih+9M=</dsig:DigestValue>
     </hash>
   </file>
   <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
