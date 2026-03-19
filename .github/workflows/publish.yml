@@ -71,6 +71,15 @@ jobs:
           /p:UpdateRequired=False
           /p:PublishDir=publish-output\
 
+      # Prevent git from converting line endings in ClickOnce XML manifests.
+      # Any CRLF<->LF change would break hash validation during installation.
+      - name: Mark ClickOnce files as binary for git
+        shell: bash
+        run: |
+          cat > publish-output/.gitattributes <<'EOF'
+          * binary
+          EOF
+
       # keep_files=true preserves old .deploy bundles so clients mid-update don't get 404s
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
@@ -78,6 +87,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: publish-output
           keep_files: true
+          enable_jekyll: false
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
