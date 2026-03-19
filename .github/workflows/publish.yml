@@ -1,0 +1,90 @@
+name: Publish ClickOnce
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write  # create GitHub Releases and upload assets
+  pages: write     # deploy to gh-pages
+  id-token: write  # required by deploy-pages
+
+jobs:
+  publish:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      # Strip leading 'v': v1.2.3 -> 1.2.3
+      - name: Extract version from tag
+        id: version
+        shell: bash
+        run: |
+          TAG="${{ github.ref_name }}"
+          VERSION="${TAG#v}"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      # Pages URL: https://<owner>.github.io/<repo>/
+      - name: Build install URL
+        id: urls
+        shell: bash
+        run: |
+          OWNER="${{ github.repository_owner }}"
+          REPO="${{ github.event.repository.name }}"
+          INSTALL_URL="https://${OWNER}.github.io/${REPO}/"
+          echo "install_url=$INSTALL_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Run tests
+        run: dotnet test ATRun.Tests/ATRun.Tests.csproj --configuration Release --verbosity normal
+
+      - name: Publish ClickOnce
+        run: >
+          dotnet publish ATRun.csproj
+          /p:PublishProfile=Properties/PublishProfiles/ClickOnceProfile.pubxml
+          /p:Configuration=Release
+          /p:ApplicationVersion=${{ steps.version.outputs.version }}.0
+          /p:InstallUrl=${{ steps.urls.outputs.install_url }}
+          /p:UpdateUrl=${{ steps.urls.outputs.install_url }}
+          /p:InstallFrom=Web
+          /p:IsWebBootstrapper=True
+          /p:UpdateEnabled=True
+          /p:UpdateMode=Foreground
+          /p:UpdateRequired=False
+          /p:PublishDir=publish-output\
+
+      # keep_files=true preserves old .deploy bundles so clients mid-update don't get 404s
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: publish-output
+          keep_files: true
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ATRun ${{ steps.version.outputs.version }}
+          body: |
+            ## Install
+
+            **Online installer (recommended — receives auto-updates):**
+            [${{ steps.urls.outputs.install_url }}ATRun.application](${{ steps.urls.outputs.install_url }}ATRun.application)
+
+            Click the link above to install via ClickOnce. The application will update
+            itself automatically on each launch when a new version is published.
+
+            **Offline installer:**
+            Download `setup.exe` from the assets below.
+          files: publish-output/setup.exe
+          fail_on_unmatched_files: true
