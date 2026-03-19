@@ -9,7 +9,7 @@ ATRun is a small Windows Forms utility (.NET 8) for managing Windows startup reg
 
 Or download `setup.exe` from the [latest release](../../releases/latest).
 
-> Requires [.NET 8 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/8.0) if installing from `setup.exe`.
+> Requires [.NET 10 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/10.0) if installing from `setup.exe`.
 
 ## Features
 
@@ -36,7 +36,7 @@ ATRun.exe <filePath> [/hklm]
 ## Requirements
 
 - **OS:** Windows 10 or later
-- **Runtime:** [.NET 8 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/8.0)
+- **Runtime:** [.NET 10 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/10.0)
 - **Privileges:** Standard user for `HKCU`; administrator required for `HKLM`
 
 ## Build
