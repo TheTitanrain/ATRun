@@ -233,8 +233,11 @@ namespace ATRun
             WriteIndented = true
         };
 
+        // Overridable in tests to redirect reads/writes away from the real %LOCALAPPDATA%\ATRun path.
+        internal static string? SettingsDirectoryOverride { get; set; }
+
         private static string SettingsDirectory =>
-            Path.Combine(
+            SettingsDirectoryOverride ?? Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "ATRun");
 

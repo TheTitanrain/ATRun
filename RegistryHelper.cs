@@ -7,6 +7,11 @@ namespace ATRun
     /// <summary>All registry reads/writes for the autorun key.</summary>
     internal static class RegistryHelper
     {
+        // Overridable in tests to redirect registry I/O away from the real autorun key.
+        internal static string? AutorunKeyOverride { get; set; }
+
+        private static string AutorunKey => AutorunKeyOverride ?? AutorunKey;
+
         // ── Check whether a given path is already registered ──────────────────
         /// <returns>
         /// 0 — not found,
@@ -26,7 +31,7 @@ namespace ATRun
         {
             try
             {
-                using var key = hive.OpenSubKey(FileConstants.AutorunRegKey, false);
+                using var key = hive.OpenSubKey(AutorunKey, false);
                 if (key == null) return false;
                 foreach (var name in key.GetValueNames())
                 {
@@ -54,7 +59,7 @@ namespace ATRun
         {
             try
             {
-                using var key = hive.OpenSubKey(FileConstants.AutorunRegKey, false);
+                using var key = hive.OpenSubKey(AutorunKey, false);
                 if (key == null) return;
                 foreach (var name in key.GetValueNames())
                 {
@@ -76,8 +81,8 @@ namespace ATRun
                 ? Registry.LocalMachine
                 : Registry.CurrentUser;
 
-            using var key = hive.OpenSubKey(FileConstants.AutorunRegKey, true)
-                         ?? hive.CreateSubKey(FileConstants.AutorunRegKey);
+            using var key = hive.OpenSubKey(AutorunKey, true)
+                         ?? hive.CreateSubKey(AutorunKey);
             var value = entry.FullPath.Contains(' ') ? $"\"{entry.FullPath}\"" : entry.FullPath;
             key.SetValue(entry.Name, value, RegistryValueKind.String);
         }
@@ -90,7 +95,7 @@ namespace ATRun
                 : Registry.CurrentUser;
             try
             {
-                using var key = hive.OpenSubKey(FileConstants.AutorunRegKey, true);
+                using var key = hive.OpenSubKey(AutorunKey, true);
                 if (key == null) return false;
                 key.DeleteValue(entry.Name, throwOnMissingValue: false);
                 return true;
