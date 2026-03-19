@@ -13,6 +13,7 @@ namespace ATRun
         private Label      lblDescription;
         private Panel      pnlFooter;
         private Button     btnClose;
+        private Button     btnCheckUpdates;
 
         protected override void Dispose(bool disposing)
         {
@@ -103,7 +104,22 @@ namespace ATRun
             btnClose.FlatAppearance.MouseOverBackColor = Color.FromArgb(215, 215, 215);
             btnClose.Click += (_, _) => Close();
 
+            btnCheckUpdates = new Button
+            {
+                Text      = "Check for Updates",
+                Location  = new Point(198, 10),
+                Size      = new Size(150, 32),
+                FlatStyle = FlatStyle.Flat,
+                BackColor = Color.FromArgb(232, 232, 232),
+                ForeColor = Color.FromArgb(40, 40, 40),
+                Cursor    = Cursors.Hand,
+            };
+            btnCheckUpdates.FlatAppearance.BorderSize = 0;
+            btnCheckUpdates.FlatAppearance.MouseOverBackColor = Color.FromArgb(215, 215, 215);
+            btnCheckUpdates.Click += BtnCheckUpdates_Click;
+
             pnlFooter.Controls.Add(btnClose);
+            pnlFooter.Controls.Add(btnCheckUpdates);
 
             // ── Assemble ──────────────────────────────────────────────────────
             Controls.Add(picIcon);
