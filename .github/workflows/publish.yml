@@ -44,12 +44,21 @@ jobs:
           INSTALL_URL="https://${OWNER}.github.io/${REPO}/"
           echo "install_url=$INSTALL_URL" >> "$GITHUB_OUTPUT"
 
+      # MSBuild (from VS) is required for GenerateBootstrapper (setup.exe).
+      # dotnet CLI MSBuild does not support that task (MSB4803).
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Restore
+        run: dotnet restore ATRun.sln
+
       - name: Run tests
-        run: dotnet test ATRun.Tests/ATRun.Tests.csproj --configuration Release --verbosity normal
+        run: dotnet test ATRun.Tests/ATRun.Tests.csproj --configuration Release --no-restore --verbosity normal
 
       - name: Publish ClickOnce
         run: >
-          dotnet publish ATRun.csproj
+          msbuild ATRun.csproj
+          /target:Publish
           /p:PublishProfile=Properties/PublishProfiles/ClickOnceProfile.pubxml
           /p:Configuration=Release
           /p:ApplicationVersion=${{ steps.version.outputs.version }}.0
