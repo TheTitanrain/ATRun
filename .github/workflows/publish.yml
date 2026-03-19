@@ -103,7 +103,7 @@ jobs:
             Click the link above to install via ClickOnce. The application will update
             itself automatically on each launch when a new version is published.
 
-            **Offline installer:**
-            Download `setup.exe` from the assets below.
+            **Web bootstrapper (installs .NET 10 if needed, then downloads the app):**
+            Download `setup.exe` from the assets below. An internet connection is required.
           files: publish-output/setup.exe
           fail_on_unmatched_files: true
