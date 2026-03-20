@@ -16,6 +16,9 @@ Or download `setup.exe` from the [latest release](../../releases/latest).
 
 > `setup.exe` is a **web bootstrapper**: it downloads .NET 10 Desktop Runtime (if not already installed) and the application itself from GitHub Pages. An internet connection is required.
 
+**Offline / portable — no installation, no internet required:**
+Download `ATRun-vX.X.X-win-x64.exe` from the [latest release](../../releases/latest).
+
 ## Features
 
 - Add `.exe` files to startup via drag & drop or the file picker.
