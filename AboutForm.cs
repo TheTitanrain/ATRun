@@ -13,6 +13,7 @@ namespace ATRun
     {
         private const string ReleasesApiUrl  = "https://api.github.com/repos/TheTitanrain/ATRun/releases/latest";
         private const string ReleasesPageUrl = "https://github.com/TheTitanrain/ATRun/releases";
+        private const string DonateUrl       = "https://donatr.ee/titanrain";
 
         private static readonly HttpClient _http = new();
 
@@ -46,6 +47,7 @@ namespace ATRun
             lblVersion.Text         = LocalizationManager.Format("About.Version", GetVersion());
             lblDescription.Text     = LocalizationManager.Get("About.Description");
             btnClose.Text           = LocalizationManager.Get("About.CloseButton");
+            lnkDonate.Text          = LocalizationManager.Get("About.Donate");
             if (btnCheckUpdates.Enabled)
                 btnCheckUpdates.Text = LocalizationManager.Get("About.CheckUpdatesButton");
         }
@@ -109,6 +111,9 @@ namespace ATRun
             using var doc = JsonDocument.Parse(json);
             return doc.RootElement.GetProperty("tag_name").GetString();
         }
+
+        private void LnkDonate_LinkClicked(object? sender, LinkLabelLinkClickedEventArgs e)
+            => Process.Start(new ProcessStartInfo(DonateUrl) { UseShellExecute = true });
 
         private static string GetVersion()
         {

@@ -11,6 +11,7 @@ namespace ATRun
         private Label      lblAppName;
         private Label      lblVersion;
         private Label      lblDescription;
+        private LinkLabel  lnkDonate;
         private Panel      pnlFooter;
         private Button     btnClose;
         private Button     btnCheckUpdates;
@@ -27,7 +28,7 @@ namespace ATRun
             SuspendLayout();
 
             // ── Form ──────────────────────────────────────────────────────────
-            ClientSize      = new Size(360, 250);
+            ClientSize      = new Size(360, 280);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox     = false;
             MinimizeBox     = false;
@@ -81,6 +82,19 @@ namespace ATRun
                 BackColor = Color.Transparent,
             };
 
+            // ── Donate link ───────────────────────────────────────────────────
+            lnkDonate = new LinkLabel
+            {
+                AutoSize  = false,
+                Size      = new Size(360, 20),
+                Location  = new Point(0, 198),
+                TextAlign = ContentAlignment.MiddleCenter,
+                Font      = new Font("Segoe UI", 9f),
+                BackColor = Color.Transparent,
+                LinkColor = Color.FromArgb(0, 102, 204),
+            };
+            lnkDonate.LinkClicked += LnkDonate_LinkClicked;
+
             // ── Footer ────────────────────────────────────────────────────────
             pnlFooter = new Panel
             {
@@ -126,6 +140,7 @@ namespace ATRun
             Controls.Add(lblAppName);
             Controls.Add(lblVersion);
             Controls.Add(lblDescription);
+            Controls.Add(lnkDonate);
             Controls.Add(pnlFooter);
 
             ResumeLayout(false);
