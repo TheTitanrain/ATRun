@@ -80,6 +80,22 @@ jobs:
           * binary
           EOF
 
+      - name: Publish self-contained single-file EXE
+        run: >
+          dotnet publish ATRun.csproj
+          --configuration Release
+          --runtime win-x64
+          --self-contained true
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:EnableCompressionInSingleFile=true
+          -p:Version=${{ steps.version.outputs.version }}
+          --output selfcontained-output
+
+      - name: Rename self-contained artifact
+        shell: bash
+        run: mv selfcontained-output/ATRun.exe "selfcontained-output/ATRun-${{ github.ref_name }}-win-x64.exe"
+
       # keep_files=true preserves old .deploy bundles so clients mid-update don't get 404s
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
@@ -105,5 +121,11 @@ jobs:
 
             **Web bootstrapper (installs .NET 10 if needed, then downloads the app):**
             Download `setup.exe` from the assets below. An internet connection is required.
-          files: publish-output/setup.exe
+
+            **Offline / portable (no installation, no internet required):**
+            Download `ATRun-${{ github.ref_name }}-win-x64.exe` from the assets below.
+            Self-contained single file — just download and run on Windows x64.
+          files: |
+            publish-output/setup.exe
+            selfcontained-output/ATRun-${{ github.ref_name }}-win-x64.exe
           fail_on_unmatched_files: true
