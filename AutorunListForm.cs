@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ATRun
@@ -50,7 +51,9 @@ namespace ATRun
         // ── Load / refresh ────────────────────────────────────────────────────
         private void LoadEntries()
         {
-            _entries = RegistryHelper.ReadAllEntries();
+            _entries = RegistryHelper.ReadAllEntries()
+                .OrderBy(e => e.Name, StringComparer.CurrentCultureIgnoreCase)
+                .ToList();
             flowEntries.Controls.Clear();
 
             if (_entries.Count == 0)

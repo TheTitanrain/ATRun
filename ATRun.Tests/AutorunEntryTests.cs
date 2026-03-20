@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace ATRun.Tests
@@ -71,6 +74,50 @@ namespace ATRun.Tests
             Assert.Equal("MyApp", modified.Name);
             Assert.Equal(@"C:\new.exe", modified.FullPath);
             Assert.Equal(AutorunHive.CurrentUser, modified.Hive);
+        }
+
+        [Fact]
+        public void SortByName_CaseInsensitive_SortsCorrectly()
+        {
+            var entries = new List<AutorunEntry>
+            {
+                new("zoom",  @"C:\zoom.exe",  AutorunHive.CurrentUser),
+                new("Alpha", @"C:\alpha.exe", AutorunHive.CurrentUser),
+                new("beta",  @"C:\beta.exe",  AutorunHive.CurrentUser),
+            };
+
+            var sorted = entries.OrderBy(e => e.Name, StringComparer.CurrentCultureIgnoreCase).ToList();
+
+            Assert.Equal("Alpha", sorted[0].Name);
+            Assert.Equal("beta",  sorted[1].Name);
+            Assert.Equal("zoom",  sorted[2].Name);
+        }
+
+        [Fact]
+        public void SortByName_MixedHives_SortsIgnoringHive()
+        {
+            var entries = new List<AutorunEntry>
+            {
+                new("Zoom",  @"C:\zoom.exe",  AutorunHive.LocalMachine),
+                new("Alpha", @"C:\alpha.exe", AutorunHive.CurrentUser),
+                new("Beta",  @"C:\beta.exe",  AutorunHive.LocalMachine),
+            };
+
+            var sorted = entries.OrderBy(e => e.Name, StringComparer.CurrentCultureIgnoreCase).ToList();
+
+            Assert.Equal("Alpha", sorted[0].Name);
+            Assert.Equal("Beta",  sorted[1].Name);
+            Assert.Equal("Zoom",  sorted[2].Name);
+        }
+
+        [Fact]
+        public void SortByName_EmptyList_ReturnsEmpty()
+        {
+            var entries = new List<AutorunEntry>();
+
+            var sorted = entries.OrderBy(e => e.Name, StringComparer.CurrentCultureIgnoreCase).ToList();
+
+            Assert.Empty(sorted);
         }
     }
 }
