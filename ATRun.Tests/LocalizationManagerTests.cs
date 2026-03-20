@@ -209,5 +209,27 @@ namespace ATRun.Tests
             // The collection uses OrdinalIgnoreCase
             Assert.Contains("add to startup.lnk", LocalizationManager.GetKnownSendToShortcutNames());
         }
+
+        // ── GetCurrentSendToShortcutName ──────────────────────────────────────
+
+        [Theory]
+        [InlineData((int)AppLanguage.English, "Add to Startup.lnk")]
+        [InlineData((int)AppLanguage.Russian, "Добавить в автозапуск.lnk")]
+        public void GetCurrentSendToShortcutName_ReturnsCorrectNamePerLanguage(int language, string expected)
+        {
+            LocalizationManager.SetLanguage((AppLanguage)language, persist: false);
+            Assert.Equal(expected, LocalizationManager.GetCurrentSendToShortcutName());
+        }
+
+        // ── GetCurrentSendToShortcutDescription ───────────────────────────────
+
+        [Theory]
+        [InlineData((int)AppLanguage.English, "Add the selected application to Windows startup")]
+        [InlineData((int)AppLanguage.Russian, "Добавить выбранное приложение в автозапуск Windows")]
+        public void GetCurrentSendToShortcutDescription_ReturnsCorrectDescriptionPerLanguage(int language, string expected)
+        {
+            LocalizationManager.SetLanguage((AppLanguage)language, persist: false);
+            Assert.Equal(expected, LocalizationManager.GetCurrentSendToShortcutDescription());
+        }
     }
 }

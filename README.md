@@ -19,7 +19,7 @@ Or download `setup.exe` from the [latest release](../../releases/latest).
 ## Features
 
 - Add `.exe` files to startup via drag & drop or the file picker.
-- Choose between current user (`HKCU`) and all users (`HKLM`) registry hives.
+- Choose between current user (`HKCU`) and all users (`HKLM`) registry hives. When `HKLM` is selected and the app is not running as administrator, it offers to restart elevated via a UAC prompt.
 - Review and delete existing startup entries from the management window.
 - Register ATRun in the Windows **Send To** menu for one-click registration from Explorer.
 - UI in **English** and **Russian** — auto-detected from Windows on first launch, changeable from the main window.
@@ -42,7 +42,7 @@ ATRun.exe <filePath> [/hklm]
 
 - **OS:** Windows 10 or later
 - **Runtime:** [.NET 10 Desktop Runtime (x64)](https://dotnet.microsoft.com/download/dotnet/10.0)
-- **Privileges:** Standard user for `HKCU`; administrator required for `HKLM`
+- **Privileges:** Standard user for `HKCU`; administrator required for `HKLM` (the app will offer to self-elevate via UAC)
 
 ## Build
 
@@ -56,5 +56,5 @@ Output: `bin/Debug/net10.0-windows/ATRun.exe`
 
 ## Notes
 
-- Writing to `HKLM` requires administrator privileges. The app runs as `asInvoker` — the caller is responsible for elevation.
+- Writing to `HKLM` requires administrator privileges. In GUI mode the app offers to restart itself elevated via a UAC prompt; in silent/CLI mode the caller is responsible for elevation.
 - Language preference is saved to `%LOCALAPPDATA%\ATRun\settings.json`.
