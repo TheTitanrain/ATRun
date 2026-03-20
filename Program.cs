@@ -12,7 +12,10 @@ namespace ATRun
             LocalizationManager.Initialize();
 
             // Silent mode: ATRun.exe <filePath> [/hklm]
-            if (args.Length > 0)
+            // GUI-elevated mode:  ATRun.exe <filePath> [/hklm] /gui  → skips silent path, opens GUI with file pre-loaded
+            bool hasGuiFlag = Array.Exists(args, a => string.Equals(a, "/gui", StringComparison.OrdinalIgnoreCase));
+
+            if (args.Length > 0 && !hasGuiFlag)
             {
                 string filePath = args[0];
 
@@ -40,7 +43,7 @@ namespace ATRun
                 var entry = new AutorunEntry(name, filePath, hive);
 
                 try { RegistryHelper.WriteEntry(entry); }
-                catch { /* silent — no elevation */ }
+                catch { /* silent — callers expect immediate exit on error */ }
                 return;
             }
 

@@ -196,6 +196,19 @@ namespace ATRun.Tests
             Assert.Equal(path2, stored);
         }
 
+        [Fact]
+        public void DeleteEntry_NonExistentName_ReturnsTrue()
+        {
+            // Never written — DeleteValue uses throwOnMissingValue: false, so the key
+            // opens successfully and returns true regardless of whether the value existed.
+            string name = _fixture.NewEntryName();
+            var entry = new AutorunEntry(name, @"C:\TestApps\" + name + ".exe", AutorunHive.CurrentUser);
+
+            bool result = RegistryHelper.DeleteEntry(entry);
+
+            Assert.True(result);
+        }
+
         // ── HKLM without elevation ────────────────────────────────────────────
 
         [Fact]

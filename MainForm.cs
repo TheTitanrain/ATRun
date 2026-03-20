@@ -59,6 +59,11 @@ namespace ATRun
         {
             base.OnLoad(e);
             var args = Environment.GetCommandLineArgs();
+            if (Array.Exists(args, a => string.Equals(a, "/hklm", StringComparison.OrdinalIgnoreCase)))
+            {
+                _hive = AutorunHive.LocalMachine;
+                RefreshHiveButtons();
+            }
             if (args.Length > 1 && File.Exists(args[1]))
                 ProcessFile(args[1]);
         }
@@ -361,9 +366,32 @@ namespace ATRun
                 // Reset to accept another file
                 BtnClear_Click(null, EventArgs.Empty);
             }
-            catch (UnauthorizedAccessException)
+            catch (Exception ex) when (ex is UnauthorizedAccessException or System.Security.SecurityException)
             {
-                ShowNotification(LocalizationManager.Get("MainForm.RegistryAccessDenied"), success: false);
+                var result = MessageBox.Show(
+                    this,
+                    LocalizationManager.Get("MainForm.ElevatePrompt"),
+                    LocalizationManager.Get("MainForm.ElevateTitle"),
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question,
+                    MessageBoxDefaultButton.Button1);
+
+                if (result == DialogResult.Yes)
+                {
+                    var elevArgs = _hive == AutorunHive.LocalMachine
+                        ? new[] { _filePath!, "/hklm", "/gui" }
+                        : new[] { _filePath!, "/gui" };
+
+                    bool launched = ShellHelper.RestartAsAdmin(elevArgs);
+                    if (launched)
+                        Application.Exit();
+                    else
+                        ShowNotification(LocalizationManager.Get("MainForm.RegistryAccessDenied"), success: false);
+                }
+                else
+                {
+                    ShowNotification(LocalizationManager.Get("MainForm.RegistryAccessDenied"), success: false);
+                }
             }
             catch (Exception ex)
             {

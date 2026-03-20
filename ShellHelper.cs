@@ -143,5 +143,32 @@ namespace ATRun
             foreach (string linkName in LocalizationManager.GetKnownSendToShortcutNames())
                 yield return GetSendToLinkPath(linkName);
         }
+
+        // ── UAC re-launch ─────────────────────────────────────────────────────
+        public static bool RestartAsAdmin(string[] args)
+        {
+            try
+            {
+                var psi = new ProcessStartInfo
+                {
+                    FileName        = Application.ExecutablePath,
+                    Arguments       = string.Join(" ", Array.ConvertAll(args,
+                                          a => a.Contains(' ') ? $"\"{a}\"" : a)),
+                    Verb            = "runas",
+                    UseShellExecute = true,
+                };
+                Process.Start(psi);
+                return true;
+            }
+            catch (System.ComponentModel.Win32Exception)
+            {
+                // User declined the UAC prompt.
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
     }
 }
